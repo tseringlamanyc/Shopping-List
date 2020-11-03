@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ItemFeedVC: UIViewController {
     
     private var tableView: UITableView!
     
@@ -37,7 +37,9 @@ class ViewController: UIViewController {
     private func configureDataSource() {
         dataSource = DataSource(tableView: tableView, cellProvider: { (tableView, indexPath, item) -> UITableViewCell? in
             let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-            cell.textLabel?.text = "\(item.name)"
+            let formattedPrice = String(format: "%.2f", item.price)
+            cell.textLabel?.text = "\(item.name)\nPrice: $\(formattedPrice)"
+            cell.textLabel?.numberOfLines = 0
             return cell
         })
         
@@ -55,18 +57,30 @@ class ViewController: UIViewController {
             snapshot.appendItems(items)
         }
         
-        dataSource.apply(snapshot, animatingDifferences: true)
+        dataSource.apply(snapshot, animatingDifferences: false)
     }
     
     @objc
     private func toggleEditState() {
-        
+        tableView.setEditing(!tableView.isEditing, animated: true)
+        navigationItem.leftBarButtonItem?.title = tableView.isEditing ? "Done" : "Edit"
     }
     
     @objc
     private func presentAddVC() {
-        
+        guard let addItemVC = storyboard?.instantiateViewController(identifier: "AddItemVC") as? AddItemVC else {
+            return
+        }
+        addItemVC.delegate = self
+        present(addItemVC, animated: true)
     }
 
 }
 
+extension ItemFeedVC: AddItemVCDelegate {
+    func addNewItem(VC: AddItemVC, item: Item) {
+        var snapshot = dataSource.snapshot()
+        snapshot.appendItems([item], toSection: item.category)
+        dataSource.apply(snapshot, animatingDifferences: false)
+    }
+}
