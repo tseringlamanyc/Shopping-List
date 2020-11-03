@@ -62,6 +62,7 @@ class ItemFeedVC: UIViewController {
     
     @objc
     private func toggleEditState() {
+        // true -> false -> true (toggles)
         tableView.setEditing(!tableView.isEditing, animated: true)
         navigationItem.leftBarButtonItem?.title = tableView.isEditing ? "Done" : "Edit"
     }
