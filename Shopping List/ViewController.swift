@@ -17,6 +17,13 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         configureTableView()
         configureDataSource()
+        configureNavBar()
+    }
+    
+    private func configureNavBar() {
+        navigationItem.title = "Shopping Cart"
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(toggleEditState))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(presentAddVC))
     }
 
     private func configureTableView() {
@@ -49,6 +56,16 @@ class ViewController: UIViewController {
         }
         
         dataSource.apply(snapshot, animatingDifferences: true)
+    }
+    
+    @objc
+    private func toggleEditState() {
+        
+    }
+    
+    @objc
+    private func presentAddVC() {
+        
     }
 
 }

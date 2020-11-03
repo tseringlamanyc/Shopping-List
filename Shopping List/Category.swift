@@ -13,4 +13,5 @@ enum Category: String, CaseIterable {
     case education = "Education"
     case health = "Health"
     case money = "Money"
+    case shoppingcart = "Shopping Cart"
 }
